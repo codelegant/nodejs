@@ -1,6 +1,2 @@
 var http=require("http");
-http.STATUS_CODES[200]="Good";//×Ô¶¨ÒåÏìÓ¦ÎÄ±¾
-var httpServer=http.createServer();
-httpServer.on("request",function(req,res){
-    console.log("get Resquest");
-}).listen(8888);
+http.STATUS_CODES[200]="Good";//è‡ªå®šä¹‰å“åº”æ–‡æœ¬
