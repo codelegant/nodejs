@@ -30,13 +30,13 @@ proxy.listen(1010, "lai", function () {
         port    : 1010,
         hostname: "lai",
         method  : "CONNECT",
-        path    : "www.google.com:80"
+        path    : "www.baidu.com:443"
     };
 
     var req = http.request(options);
     req.end();
     req.on("connect", function (res, socket, head) {
-        console.log("G0t Connected!");
+        console.log("Got Connected!");
         socket.write('GET / HTTP/1.1\r\n' +
             'Host: www.google.com:80\r\n' +
             'Connection: close\r\n' +
@@ -44,8 +44,6 @@ proxy.listen(1010, "lai", function () {
         socket.on("data", function (chunk) {
             console.log(chunk.toString());
         });
-        socket.on('end', function () {
-            proxy.close();
-        });
     });
+
 });
