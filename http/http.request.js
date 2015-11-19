@@ -12,18 +12,14 @@ var http        = require("http"),
 var httpServer = http.createServer(function (request,response) {
 
 
-    var postData = querystring.stringify({
-        'msg': 's?ie=UTF-8&wd=helloworld'
-    });
 
     var options = {
         hostname: 'www.baidu.com',
         port    : 80,
         path    : '',
-        method  : 'POST',
+        method  : 'get',
         headers : {
-            'Content-Type'  : 'application/x-www-form-urlencoded',
-            'Content-Length': postData.length
+            'Content-Type'  : 'application/x-www-form-urlencoded'
         }
     };
     var req = http.request(options, function (res) {
@@ -37,6 +33,6 @@ var httpServer = http.createServer(function (request,response) {
     req.on("error", function (e) {
         console.log("Problem width request:" + e.message);
     });
-    req.write(postData);
     req.end();
+    //response.end();
 }).listen(1010);
