@@ -1,11 +1,3 @@
-/**
- * Copyright (C) 2015 Codelegant. All rights reserved
- * Datetime: 2015/11/19 19:16
- * Description:
- * Author: 赖传峰
- * Email: laichuanfeng@hotmail.com
- * Homepage: laichuanfeng.com
- */
 var http = require("http");
 var net = require("net");
 var url = require("url");
