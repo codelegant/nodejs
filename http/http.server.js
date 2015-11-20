@@ -23,8 +23,6 @@ httpServer.on("request",function(req,res){
         "Content-Type":"text/html"
     });
     res.end(body);
-
-    var clientRequest=http.request();
 });
 httpServer.on("close",function(){
    console.log("Server Closed");
