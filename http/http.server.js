@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2015 Xucr. All rights reserved
+ * Copyright (C) 2015 Codelegant. All rights reserved
  * Datetime: 2015/11/19 8:59
  * Description:
  * Author: 赖传峰
