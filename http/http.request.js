@@ -9,27 +9,25 @@
 var http        = require("http"),
     querystring = require("querystring");
 
-var httpServer = http.createServer(function (request, response) {
-    var options = {
-        hostname: 'www.baidu.com',
-        port    : 80,
-        path    : '',
-        method  : 'get',
-        headers : {
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    };
-    var req = http.request(options, function (res) {
-        console.log("STATUS:" + res.statusCode);
-        console.log("Headers:" + JSON.stringify(res.headers));
-        res.setEncoding("utf8");
-        res.on("data", function (chunk) {
-            response.write("BODY:" + chunk);
-            console.log("BODY:" + chunk);
-        });
-    });
-    req.on("error", function (e) {
-        console.log("Problem width request:" + e.message);
-    });
-    req.end();
-}).listen(1010);
+var httpClient=http.request({
+    hostname:"lai",
+    port:1010
+});
+// httpClient.on("response",function(host,prot,socketPath){
+//     console.log("使用'response'连接nodejs服务器");
+// });
+httpClient.on("connect",function(){
+    console.log("使用'connect'连接nodejs服务器");
+});
+httpClient.on("socket",function(){
+    console.log("使用'socket'连接nodejs服务器");
+});
+httpClient.on("abort",function(){
+    console.log("连接被终止");
+});
+httpClient.on("upgrade",function(){
+    console.log("upgrade连接");
+});
+httpClient.on("error",function(){
+    console.log("与nodejs服务器连接出错");
+});

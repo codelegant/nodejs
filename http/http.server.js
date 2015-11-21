@@ -11,26 +11,30 @@ var http=require("http"),
 var httpServer=http.createServer();//Instance of http.Server
 httpServer.on("request",function(req,res){
     res.on("close",function(){
-        console.log("close");
+        console.log("服务器关闭");
     });
     res.on("finish",function(){
-        console.log("Request Finish");
+        console.log("请求完成");
     });
-    var body="Programming nodejs";
+    var body="我在学习Nodejs";
     //res.setHeader("Content-Type","text/plain");
-    res.writeHead(200,"You get my message",{
-        "Content-Length":body.length,
+    res.writeHead(200,body,{
         "Content-Type":"text/html"
     });
     res.end(body);
 });
 httpServer.on("close",function(){
-   console.log("Server Closed");
+   console.log("服务器关闭");
+});
+httpServer.on("connection",function(socket){
+    console.log("有Nodejs客户端通过'connection'方法连接");
 });
 httpServer.on("connect",function(req,socket,head){
-    console.log("Server Connect");
-    console.log(head);
+    console.log("有Nodejs客户端通过'connect'方法连接");
 });
-httpServer.listen(1010,"lai",function(){
-    console.log("Listen Port:1010");
+httpServer.on("upgrade",function(){
+    console.log("有Nodejs客户端通过'upgrade'方法连接");
+});
+httpServer.listen(1010,function(){
+    console.log("监听端口:1010");
 });
