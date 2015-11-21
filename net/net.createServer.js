@@ -5,10 +5,11 @@ var path = require("path");
  * 相当于调用net.Server类创建一个实例
  * */
 var server = net.createServer();
-server.listen(path.join('\\\\?\\pipe', process.cwd(), 'myctl'), function () {
-	console.log("服务器启动");
-	//console.log(server.address());
-});
+// server.listen(path.join('\\\\?\\pipe', process.cwd(), 'myctl'), function () {
+// 	console.log("服务器启动");
+// 	//console.log(server.address());
+// });
+server.listen(1010, "lai");
 
 server.on("connection", function (socket) {
 	console.log("有客户端连接过来了");
@@ -18,7 +19,8 @@ server.on("connection", function (socket) {
 	socket.write("你好，这是返回信息。\r\n");
 })
 server.on("listening", function () {
-	console.log("服务器绑定了端口");
+	console.log("服务器启动");
+	console.log(server.address());
 });
 server.on("error", function (e) {
 	if (e.code === "EADDRINUSE") {
