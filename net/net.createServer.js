@@ -1,16 +1,16 @@
 var net = require("net");
 var path = require("path");
+var events = require('events');
+var util=require
 
 /**
  * 相当于调用net.Server类创建一个实例
  * */
-var server = net.createServer();
-// server.listen(path.join('\\\\?\\pipe', process.cwd(), 'myctl'), function () {
-// 	console.log("服务器启动");
-// 	//console.log(server.address());
-// });
+var server = new net.Server();
+//var server=net.createServer();
+var myEvent=new events.EventEmitter();
+var eventListener=events.EventEmitter.listenerCount(server,"listen");
 server.listen(1010, "lai");
-
 server.on("connection", function (socket) {
 	console.log("有客户端连接过来了");
 	socket.on("end", function () {
@@ -31,3 +31,4 @@ server.on("error", function (e) {
 		}, 1000);
 	}
 });
+console.log(eventListener);
