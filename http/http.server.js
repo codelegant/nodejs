@@ -9,7 +9,7 @@
 var http = require("http"),
     url = require("url");
 var httpServer = http.createServer();//Instance of http.Server
-httpServer.listen(1010);
+httpServer.listen(1010,"lai");
 httpServer.on("listening", function () {
     console.log("监听端口:1010");
 });
