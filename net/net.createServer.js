@@ -1,8 +1,6 @@
 var net = require("net");
 var path = require("path");
 var events = require('events');
-var util=require
-
 /**
  * 相当于调用net.Server类创建一个实例
  * */
