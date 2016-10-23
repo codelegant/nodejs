@@ -1,0 +1,31 @@
+{
+  "name": "nodejs",
+  "version": "0.1.0",
+  "description": "nodejs action",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codelegant/nodejs.git"
+  },
+  "keywords": [
+    "nodejs"
+  ],
+  "author": "laichuanfeng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codelegant/nodejs/issues"
+  },
+  "homepage": "https://github.com/codelegant/nodejs#readme",
+  "dependencies": {
+    "cheerio": "^0.22.0",
+    "request": "^2.75.0",
+    "request-promise": "^4.1.1",
+    "url-parse": "^1.1.6"
+  },
+  "devDependencies": {
+    "@types/node": "^6.0.45"
+  }
+}
