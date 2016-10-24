@@ -1,51 +1,72 @@
+const request = require('request');
 const rq = require('request-promise');
 const cheerio = require('cheerio');
 const headers = {
   'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'
 };
 
-
-/**
- * 获取城市列表
- */
-const timeStampStr = Date.now().toString();
-let addressList = [];
-rq({
-  uri: 'http://dianying.taobao.com/cityAction.json',
-  method: 'GET',
-  qs: {
-    _ksTS: `${timeStampStr}_20`,
-    jsoncallback: `jsonp20`,
-    action: 'cityAction',
-    n_s: 'new',
-    event_submit_doGetAllRegion: true
+const taobao = (() => ({
+  getCityList() {
+    const timeStampStr = Date.now().toString();
+    return rq({
+      uri: 'http://dianying.taobao.com/cityAction.json',
+      method: 'GET',
+      qs: {
+        _ksTS: `${timeStampStr}_19`,
+        jsoncallback: `jsonp20`,
+        action: 'cityAction',
+        n_s: 'new',
+        event_submit_doGetAllRegion: true
+      },
+      headers
+    })
+      .then(res => {
+        const resJson = JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1'));
+        let cityList = [];
+        for (const key in resJson.returnValue) {
+          if (!resJson.returnValue.hasOwnProperty(key)) continue;
+          cityList = cityList.concat(resJson.returnValue[key]);
+        }
+        return cityList;
+      });
   },
-  headers
-})
-  .then(res => {
-    const resJson = JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1'));
-    for (const key in resJson.returnValue) {
-      if (!resJson.returnValue.hasOwnProperty(key)) continue;
-      addressList = addressList.concat(resJson.returnValue[key]);
-    }
-  })
-  .catch(err => console.log(err));
+  getHotMovieList() {
+    rq({
+      uri: 'http://dianying.taobao.com/showList.htm',
+      method: 'GET',
+      qs: {
+        n_s: 'new',
+        city: 440300
+      },
+      headers,
+      transform: body => cheerio.load(body)
+    })
+      .then($ => {
+        const movieList = [];
+        const $_MovieList = $($('.tab-movie-list')[0]).find('.movie-card-wrap');
+        for (const movieIndex in $_MovieList) {
+          if (movieIndex < $_MovieList.length) {
+            const $_Movie = $($_MovieList[movieIndex]);
 
+            const infoList = [];
+            const $_InfoList = $_Movie.find('.movie-card-list').find('span');
+            for (const infoIndex in $_InfoList) {
+              if (infoIndex < $_InfoList.length) infoList.push($($_InfoList[infoIndex]).text());
+            }
 
-/**
- * 获取热映电影列表
- */
-rq({
-  uri: 'http://dianying.taobao.com/showList.htm',
-  method: 'GET',
-  qs: {
-    n_s: 'new',
-    city: 440300
-  },
-  headers,
-  transform:body=>cheerio.load(body)
-})
-  .then($=>{
-    console.log($('.tab-movie-list').html());
-  })
-  .catch(err => console.log(err));
+            movieList.push({
+              link: $_Movie.find('.movie-card-buy').attr('href'), //影片首页，同时也是票链接
+              img: $_Movie.find('.movie-card-poster').children('img').attr('src'), //缩略图
+              name: $_Movie.find('.movie-card-name').children('.bt-l').text(), //名称,
+              infoList //介绍信息，导演，主演等
+            });
+          }
+        }
+        console.log(movieList);
+        return movieList;
+      })
+      .catch(err => console.log(err));
+  }
+}))();
+taobao.getHotMovieList();
+module.exports = taobao;

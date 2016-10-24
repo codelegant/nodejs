@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "description": "nodejs action",
   "main": "index.js",
-  "scripts": {
-    "test": "test"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/codelegant/nodejs.git"

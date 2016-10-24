@@ -19,3 +19,5 @@ jspm_packages
 /*.config.js
 /vendor/
 __tests__/
+http/
+net/
