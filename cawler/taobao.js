@@ -1,4 +1,4 @@
-const request = require('request');
+//--harmony-async-await
 const rq = require('request-promise');
 const cheerio = require('cheerio');
 const headers = {
@@ -36,7 +36,7 @@ const taobao = (() => ({
       method: 'GET',
       qs: {
         n_s: 'new',
-        city: 440300
+        city: 440300//深圳
       },
       headers,
       transform: body => cheerio.load(body)
@@ -55,7 +55,7 @@ const taobao = (() => ({
             }
 
             movieList.push({
-              link: $_Movie.find('.movie-card-buy').attr('href'), //影片首页，同时也是票链接
+              link: $_Movie.find('.movie-card-buy').attr('href'), //影片首页，同时也是购票链接
               img: $_Movie.find('.movie-card-poster').children('img').attr('src'), //缩略图
               name: $_Movie.find('.movie-card-name').children('.bt-l').text(), //名称,
               infoList //介绍信息，导演，主演等
@@ -68,5 +68,4 @@ const taobao = (() => ({
       .catch(err => console.log(err));
   }
 }))();
-taobao.getHotMovieList();
 module.exports = taobao;
