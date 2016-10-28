@@ -1,2 +1,2 @@
-const Taobao=require('./taobao');
-Taobao.getCityList();
+const taobao=require('./taobao');
+const maoyan=require('./maoyan');

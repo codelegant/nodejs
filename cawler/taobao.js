@@ -20,18 +20,10 @@ const taobao = (() => ({
       },
       headers
     })
-      .then(res => {
-        const resJson = JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1'));
-        let cityList = [];
-        for (const key in resJson.returnValue) {
-          if (!resJson.returnValue.hasOwnProperty(key)) continue;
-          cityList = cityList.concat(resJson.returnValue[key]);
-        }
-        return cityList;
-      });
+      .then(res => JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1')));//字段名：[{id,parentId,regionName,cityCode,pinYin}]
   },
   getHotMovieList() {
-    rq({
+    return rq({
       uri: 'http://dianying.taobao.com/showList.htm',
       method: 'GET',
       qs: {
@@ -62,10 +54,13 @@ const taobao = (() => ({
             });
           }
         }
-        console.log(movieList);
         return movieList;
       })
       .catch(err => console.log(err));
   }
 }))();
+(async () => {
+  const cityList = await taobao.getCityList();
+  console.log(cityList);
+})();
 module.exports = taobao;
