@@ -1,6 +1,6 @@
 //--harmony-async-await
-/*global phantom:false*/
 const phantom = require('phantom');
+const req = require('request');
 const rq = require('request-promise');
 const cheerio = require('cheerio');
 const headers = {
@@ -58,21 +58,44 @@ const maoyan = (() => ({
       });
   },
   getHotMovieList() {
-    rq.cookie('ci=150');
-    rq({
-      uri: 'http://maoyan.com/films',
-      qs: {
-        showType: 1
-      },
-      jar: true,
-      
-      headers,
-      transform: body => cheerio.load(body)
-    })
-    .then($=>{
-      console.log($('.movie-list').html());
-    });
+    const j = rq.jar();
+    const uri = 'http://maoyan.com/films';
+    const cookie = rq.cookie('ci=30');//设置城市 cookie ，深圳
+    j.setCookie(cookie, uri);
+    const getOnePageList = (offset = 0)=> {
+      return rq({
+        uri,
+        jar: j,
+        headers,
+        qs: {showType: 1, offset}
+      })
+        .then(htmlString=> htmlString);
+    };
+    let movieList = [];
+    (async()=> {
+      let offset = 0;
+      let $ = cheerio.load(await getOnePageList());
+      let $_MovieList = $('.movie-list');
+      do {
+        const $_DdList = $_MovieList.find('dd');
+        for (const ddIndex in $_DdList) {
+          if (ddIndex < $_DdList.length) {
+            const $_Dd = $($_DdList[ddIndex]);
+            const id = $_Dd.find('.movie-item a').data('val').replace(/{[a-z]+:(\d+)}/gi, '$1');
+            movieList.push({
+              link: `http://www.meituan.com/dianying/${id}?#content`, //影片首页，同时也是购票链接
+              img: $_Dd.find('.movie-poster img').eq(1).data('src'), //缩略图
+              name: $_Dd.find('.movie-item-title').attr('title'), //名称,
+              infoList: '' //介绍信息，导演，主演等
+            });
+          }
+        }
+        $ = cheerio.load(await getOnePageList(offset += 30));
+        $_MovieList = $('.movie-list');
+      } while ($_MovieList.length);
+    })();
+    return movieList;
   }
 }))();
-maoyan.getHotMovieList();
+console.log(maoyan.getHotMovieList());
 module.exports = maoyan;
