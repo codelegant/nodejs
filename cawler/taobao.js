@@ -20,7 +20,7 @@ const taobao = (() => ({
       },
       headers
     })
-      .then(res => JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1')));//字段名：[{id,parentId,regionName,cityCode,pinYin}]
+      .then(res => JSON.parse(res.replace(/jsonp\d{2,3}\((.+)\);$/, '$1'))['returnValue']);//字段名：[{id,parentId,regionName,cityCode,pinYin}]
   },
   getHotMovieList() {
     return rq({
@@ -56,11 +56,10 @@ const taobao = (() => ({
         }
         return movieList;
       })
-      .catch(err => console.log(err));
   }
 }))();
-(async () => {
-  const cityList = await taobao.getCityList();
-  console.log(cityList);
-})();
+// (async () => {
+//   const cityList = await taobao.getCityList();
+//   console.log(cityList);
+// })();
 module.exports = taobao;

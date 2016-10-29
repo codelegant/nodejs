@@ -12,7 +12,7 @@ const maoyan = (() => ({
     let sitepage = undefined;
     let phInstance = undefined;
 
-    phantom.create()
+    return phantom.create()
       .then(instance => {
         phInstance = instance;
         return instance.createPage();
@@ -22,7 +22,6 @@ const maoyan = (() => ({
         return page.open('http://maoyan.com/');
       })
       .then(status => {
-        console.log(status);
         if (status !== 'success') throw Error(`StatusCode:${status}`);
         return sitepage.property('content');
       })
@@ -49,12 +48,7 @@ const maoyan = (() => ({
         }
         sitepage.close();
         phInstance.exit();
-        console.log(cityList);
         return cityList;
-      })
-      .catch(error => {
-        console.log(error);
-        phInstance.exit();
       });
   },
   getHotMovieList() {
@@ -71,11 +65,12 @@ const maoyan = (() => ({
       })
         .then(htmlString=> htmlString);
     };
-    let movieList = [];
-    (async()=> {
+    return (async()=> {
+      let movieList = [];
       let offset = 0;
       let $ = cheerio.load(await getOnePageList());
-      let $_MovieList = $('.movie-list');
+      const listClassName = '.movie-list';
+      let $_MovieList = $(listClassName);
       do {
         const $_DdList = $_MovieList.find('dd');
         for (const ddIndex in $_DdList) {
@@ -91,11 +86,14 @@ const maoyan = (() => ({
           }
         }
         $ = cheerio.load(await getOnePageList(offset += 30));
-        $_MovieList = $('.movie-list');
+        $_MovieList = $(listClassName);
       } while ($_MovieList.length);
+      return movieList;
     })();
-    return movieList;
   }
 }))();
-console.log(maoyan.getHotMovieList());
+// (async() => {
+//   console.log(await maoyan.getCityList());
+// })();
+// console.log(maoyan.getHotMovieList());
 module.exports = maoyan;
