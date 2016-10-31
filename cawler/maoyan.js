@@ -51,20 +51,18 @@ const maoyan = (() => ({
         return cityList;
       });
   },
-  getHotMovieList() {
+  getHotMovieList(cityCode = 30) {
     const j = rq.jar();
     const uri = 'http://maoyan.com/films';
-    const cookie = rq.cookie('ci=30');//设置城市 cookie ，深圳
+    const cookie = rq.cookie(`ci=${cityCode}`);//设置城市 cookie ，深圳
     j.setCookie(cookie, uri);
-    const getOnePageList = (offset = 0)=> {
-      return rq({
-        uri,
-        jar: j,
-        headers,
-        qs: {showType: 1, offset}
-      })
-        .then(htmlString=> htmlString);
-    };
+    const getOnePageList = (offset = 0)=> rq({
+      uri,
+      jar: j,
+      headers,
+      qs: {showType: 1, offset}
+    })
+      .then(htmlString=> htmlString);
     return (async()=> {
       let movieList = [];
       let offset = 0;
@@ -79,9 +77,9 @@ const maoyan = (() => ({
             const id = $_Dd.find('.movie-item a').data('val').replace(/{[a-z]+:(\d+)}/gi, '$1');
             movieList.push({
               link: `http://www.meituan.com/dianying/${id}?#content`, //影片首页，同时也是购票链接
-              img: $_Dd.find('.movie-poster img').eq(1).data('src'), //缩略图
+              img: null, //缩略图
               name: $_Dd.find('.movie-item-title').attr('title'), //名称,
-              infoList: '' //介绍信息，导演，主演等
+              infoList: null//介绍信息，导演，主演等
             });
           }
         }

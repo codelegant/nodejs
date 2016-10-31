@@ -58,8 +58,5 @@ const taobao = (() => ({
       })
   }
 }))();
-// (async () => {
-//   const cityList = await taobao.getCityList();
-//   console.log(cityList);
-// })();
+
 module.exports = taobao;
