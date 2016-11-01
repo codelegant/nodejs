@@ -76,10 +76,10 @@ const maoyan = (() => ({
             const $_Dd = $($_DdList[ddIndex]);
             const id = $_Dd.find('.movie-item a').data('val').replace(/{[a-z]+:(\d+)}/gi, '$1');
             movieList.push({
-              link: `http://www.meituan.com/dianying/${id}?#content`, //影片首页，同时也是购票链接
-              img: null, //缩略图
+              link: {
+                maoyan: `http://www.meituan.com/dianying/${id}?#content`
+              }, //影片首页，同时也是购票链接
               name: $_Dd.find('.movie-item-title').attr('title'), //名称,
-              infoList: null//介绍信息，导演，主演等
             });
           }
         }

@@ -19,8 +19,11 @@
   "dependencies": {
     "cheerio": "^0.22.0",
     "lodash.isarray": "^4.0.0",
+    "lodash.isobject": "^3.0.2",
+    "lodash.mapvalues": "^4.6.0",
+    "lodash.merge": "^4.6.0",
     "lodash.mergewith": "^4.6.0",
-    "lodash.unionby": "^4.8.0",
+    "lodash.remove": "^4.7.0",
     "lodash.unionwith": "^4.6.0",
     "lodash.unset": "^4.5.2",
     "phantom": "^3.0.2",

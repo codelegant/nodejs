@@ -29,10 +29,10 @@ const gewara = (()=>({
             const $_Movie = $($_MovieList[movieIndex]);
             if ($_Movie.find('a.redBt').attr('href')) {
               movieList.push({
-                link: $_Movie.find('a.redBt').attr('href'), //影片首页，同时也是购票链接
-                img: null, //缩略图
+                link: {
+                  gewara: 'http://www.gewara.com' + $_Movie.find('a.redBt').attr('href')
+                }, //影片首页，同时也是购票链接
                 name: $_Movie.find('.ui_movieType').attr('title'), //名称,
-                infoList: null //介绍信息，导演，主演等
               });
             }
           }
@@ -44,5 +44,4 @@ const gewara = (()=>({
     })();
   }
 }))();
-gewara.getHotMovieList();
 module.exports = gewara;
